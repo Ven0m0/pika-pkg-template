@@ -1,5 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# shellcheck enable=all shell=bash source-path=SCRIPTDIR
 set -e
+shopt -s nullglob globstar
+IFS=$'\n\t'
 
 VERSION="1.0"
 export DEBIAN_FRONTEND="noninteractive" LC_ALL=C
@@ -7,7 +10,8 @@ export DEB_BUILD_MAINT_OPTIONS="optimize=+lto -march=x86-64-v3 -O3 -flto -fuse-l
 export DEB_CFLAGS_MAINT_APPEND="-march=x86-64-v3 -O3 -flto -fuse-linker-plugin -falign-functions=32 -pipe -fno-semantic-interposition -fdata-sections -ffunction-sections"
 export DEB_CPPFLAGS_MAINT_APPEND="-march=x86-64-v3 -O3 -flto -fuse-linker-plugin -falign-functions=32 -pipe -fno-semantic-interposition -fdata-sections -ffunction-sections"
 export DEB_CXXFLAGS_MAINT_APPEND="-march=x86-64-v3 -O3 -flto -fuse-linker-plugin -falign-functions=32 -pipe -fno-semantic-interposition -fdata-sections -ffunction-sections"
-export DEB_LDFLAGS_MAINT_APPEND="-march=x86-64-v3 -O3 -flto -fuse-linker-plugin -falign-functions=32 -pipe -fno-semantic-interposition -fdata-sections -ffunction-sections"
+export DEB_LDFLAGS_MAINT_APPEND="-march=x86-64-v3 -O3 -flto -fuse-linker-plugin -falign-functions=32 -pipe -fno-semantic-interposition -fdata-sections -ffunction-sections \
+  -Wl,-O3,--sort-common,--as-needed,-gc-sections,--icf=safe,-z,relro,-z,pack-relative-relocs"
 export DEB_BUILD_OPTIONS="nocheck notest terse"
 export DPKG_GENSYMBOLS_CHECK_LEVEL=0
 
